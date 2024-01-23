@@ -24,3 +24,20 @@ As long as you:
 * **Attribute**: You must attribute any public use of the database, or works produced from the database, in the manner specified in the ODbL. For any use or redistribution of the database, or works produced from it, you must make clear to others the license of the database and keep intact any notices on the original database.
 * **Share-Alike**: If you publicly use any adapted version of this database, or works produced from an adapted database, you must also offer that adapted database under the ODbL.
 * **Keep open**: If you redistribute the database, or an adapted version of it, then you may use technological measures that restrict the work (such as DRM) as long as you also redistribute a version without such measures.
+
+
+## Generating
+
+Ensure you have GNU Make, Python, and wget installed
+
+```
+make tools.csv
+make packages.csv
+```
+
+The scraper uses the following as sources:
+
+1. Sitemap (https://stackshare.io/sitemap.xml)
+2. StackShare Search for enriching service results (https://stackshare.io/search)
+
+The package results are not enriched, since much better data for those is available elsewhere.
