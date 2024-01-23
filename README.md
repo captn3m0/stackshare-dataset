@@ -1,4 +1,6 @@
-# stackshare-dataset
+# stackshare-dataset [![DOI](https://zenodo.org/badge/747065915.svg)](https://zenodo.org/doi/10.5281/zenodo.10554436)
+
+**DOI**: `10.5281/zenodo.10554437`
 
 A dataset from stackshare.io providing lists of packages and various services. While a list of packages for
 various ecosystems is easily available elsewhere, a list of services is much harder.
