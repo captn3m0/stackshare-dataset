@@ -1,0 +1,115 @@
+{
+  "name": "stackshare-dataset",
+  "title": "Stackshare Dataset",
+  "description": "Data about various tools and packages listed on Stackshare",
+  "resources": [
+    {
+      "name": "tools",
+      "path": "tools.csv",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "schema": {
+        "fields": [
+          {
+            "name": "url",
+            "type": "string",
+            "description": "HTTPS URL to the Stackshare.io page for the tool or service"
+          },
+          {
+            "name": "object_id",
+            "type": "string",
+            "description": "Unique stackshare identifier. Typically a integer, prefixed with Service_"
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "description": "Name of the service"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "description": "Short one-line description of the service"
+          },
+          {
+            "name": "popularity",
+            "type": "number",
+            "description": "Popularity of the service"
+          },
+          {
+            "name": "votes",
+            "type": "integer",
+            "description": "Number of votes for the service"
+          },
+          {
+            "name": "verified",
+            "type": "boolean",
+            "description": "True if the stackshare.io page for this product is claimed by a verified owner"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "description": "Description of the service"
+          },
+          {
+            "name": "stack_count",
+            "type": "integer",
+            "description": "Number of stacks at stackshare.io that include this service as part of the stack"
+          },
+          {
+            "name": "type",
+            "type": "string",
+            "description": "Type of the service. Should be 'service'",
+            "example": "service"
+          },
+          {
+            "name": "category",
+            "type": "string",
+            "description": "Category of the service",
+            "constraints": {
+              "enum": [
+                "languages-and-frameworks",
+                "build-test-deploy",
+                "libraries",
+                "data-stores",
+                "collaboration",
+                "back-office",
+                "analytics",
+                "application-hosting",
+                "application-utilities",
+                "assets-and-media",
+                "support-sales-and-marketing",
+                "design",
+                "monitoring",
+                "payments",
+                "communications",
+                "mobile"
+              ]
+            }
+          },
+          {
+            "name": "layer",
+            "type": "string",
+            "description": "Layer of the service",
+            "constraints": {
+              "enum": [
+                "application and data",
+                "devops",
+                "business tools",
+                "utilities"
+              ]
+            }
+          },
+          {
+            "name": "function",
+            "type": "string",
+            "description": "Function of the service. This is somewhat of a free-form field, with more than 450 functions in the dataset."
+          }
+        ],
+        "uniqueKeys": [
+          ["object_id"],
+          ["url"]
+        ]
+      }
+    }
+  ]
+}
