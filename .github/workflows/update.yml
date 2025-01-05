@@ -1,0 +1,32 @@
+name: Update Data
+on:
+  workflow_dispatch:
+  schedule:
+    # Once a month on the 6th of everey month
+    - cron: '5 4 6 * *'
+jobs:
+  update:
+    name: Update data
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }}
+    - uses: actions/setup-python@v5 
+    - name: Update data
+      run: make clean && make tools.csv
+      id: update_data
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      id: auto-commit-action
+      with:
+        commit_message: Update Dataset
+        commit_author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
+        file_pattern: "*.csv"
+        status_options: '--untracked-files=no'
+        tagging_message: "v${{ steps.update_data.outputs.version }}"
+    
+    - name: Create Release
+      if: steps.auto-commit-action.outputs.changes_detected == 'true'
+      run: gh release create "{{ steps.update_data.outputs.version }}" *.csv
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

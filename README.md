@@ -34,7 +34,6 @@ Ensure you have GNU Make, Python, and wget installed
 
 ```
 make tools.csv
-make packages.csv
 ```
 
 The scraper uses the following as sources:

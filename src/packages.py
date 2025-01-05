@@ -21,7 +21,7 @@ def write_packages_csv():
     rows = []
     with open('prefixes.json') as prefix_file, open('packages.csv', 'w', newline='') as packages_csv:
         prefixes = json.load(prefix_file)
-        packages_writer = csv.writer(packages_csv)
+        packages_writer = csv.writer(packages_csv, dialect="unix", quoting=csv.QUOTE_MINIMAL)
         packages_writer.writerow(['url', 'ecosystem'])
 
         for url in extract_urls_from_sitemaps():
