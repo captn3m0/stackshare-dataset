@@ -9,7 +9,7 @@ sitemaps/tools2.xml: sitemaps/tools.xml
 sitemaps/tools.xml:
 	wget -P sitemaps --quiet --timestamping https://stackshare.io/sitemaps/tools.xml
 clean:
-	rm sitemaps/*.xml packages.csv tools.csv
+	rm -f sitemaps/*.xml packages.csv tools.csv
 packages.csv: sitemaps/tools4.xml
 	python src/packages.py
 tools.csv: packages.csv
