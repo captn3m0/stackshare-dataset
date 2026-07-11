@@ -30,9 +30,12 @@ As long as you:
 
 ## Generating
 
-Ensure you have GNU Make, Python, and wget installed
+Ensure you have GNU Make and Python installed, then install the Python
+dependencies (the sitemap is fetched with `curl_cffi`, which impersonates a
+real browser to get past StackShare's bot checkpoint):
 
 ```
+pip install -r requirements.txt
 make tools.csv
 ```
 

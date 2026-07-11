@@ -7,11 +7,14 @@ import operator
 
 def extract_urls_from_sitemaps():
     url_set = set()
+    # StackShare's sitemap contains unescaped '&' characters in some tool
+    # slugs (e.g. at&t-m2x, pulse-q&a), which is invalid XML. Use a recovering
+    # parser so a handful of malformed entries don't abort the whole parse.
+    parser = etree.XMLParser(recover=True)
     f = glob('sitemaps/tools*.xml')
     for file in f:
         with open(file) as xml_file:
-            tree = etree.parse(xml_file)
-            root = tree.getroot()
+            tree = etree.parse(xml_file, parser)
             for url in tree.xpath("//*[local-name()='loc']/text()"):
                 url_set.add(url)
 
