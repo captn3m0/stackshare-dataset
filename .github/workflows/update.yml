@@ -2,35 +2,44 @@ name: Update Data
 on:
   workflow_dispatch:
   schedule:
-    # Once a month on the 6th of everey month
+    # Once a month on the 6th of every month
     - cron: '5 4 6 * *'
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
 jobs:
   update:
     name: Update data
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the data commit and create the release
     steps:
-    - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
-        ref: ${{ github.head_ref }}
-    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        persist-credentials: false
+    - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
       with:
         python-version: '3.14'
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: |
+        pip install -r requirements.txt
+        playwright install --with-deps chromium-headless-shell
     - name: Update data
       run: make clean && make tools.csv
-      id: update_data
-    - uses: stefanzweifel/git-auto-commit-action@3ea6ae190baf489ba007f7c92608f33ce20ef04a # v4.16.0
-      id: auto-commit-action
-      with:
-        commit_message: Update Dataset
-        commit_author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
-        file_pattern: "*.csv"
-        status_options: '--untracked-files=no'
-        tagging_message: "v${{ steps.update_data.outputs.version }}"
-    
-    - name: Create Release
-      if: steps.auto-commit-action.outputs.changes_detected == 'true'
-      run: gh release create "{{ steps.update_data.outputs.version }}" *.csv
+    - name: Commit and release
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        if git diff --quiet -- '*.csv'; then
+          echo "No changes to the dataset, skipping release"
+          exit 0
+        fi
+        version="v$(date +%Y.%-m.%-d)"
+        git config user.name 'github-actions[bot]'
+        git config user.email 'github-actions[bot]@users.noreply.github.com'
+        git commit -m "Update Dataset" -- '*.csv'
+        gh auth setup-git
+        git push origin "HEAD:${GITHUB_REF_NAME}"
+        gh release create "$version" --target "$(git rev-parse HEAD)" \
+          --title "$version" --notes "Automated monthly dataset update" packages.csv tools.csv
