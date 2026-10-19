@@ -39,6 +39,10 @@ pip install -r requirements.txt
 make tools.csv
 ```
 
+To publish a new release (needs `uv` and an authenticated `gh`), run
+`./release.sh` from a clean `main`. It regenerates the data, commits it and
+creates a `vYYYY.M.D` GitHub release with both CSVs attached.
+
 The scraper uses the following as sources:
 
 1. Sitemap (https://stackshare.io/sitemap.xml)

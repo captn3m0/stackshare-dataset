@@ -3,7 +3,8 @@
 StackShare is served through Vercel's bot checkpoint, which fingerprints the
 TLS handshake (JA3) and blocks plain curl/wget. curl_cffi replays a real
 Chrome handshake so the request goes through, and is pip-installable (unlike
-the curl-impersonate binary), so it works on stock CI runners.
+the curl-impersonate binary). Datacenter IPs such as GitHub runners still get
+a JS challenge (HTTP 429), so run it from a residential connection.
 """
 import os
 import sys
